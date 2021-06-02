@@ -22,6 +22,21 @@
 					<menuItems>
 						<menuItem>
 							<modulehooks>
+								<!-- Sample React Sidebar Widget -->
+								<modulehook>
+									<plugin>
+										<type>sidebar</type>
+										<name>popup</name>
+										<file>index.js</file>
+									</plugin>
+									<params>
+										<!--
+											Any config params you specify here, will
+											be passed to the "initialize" function of your plugin.
+										-->
+										<widget>popup</widget>
+									</params>
+								</modulehook>
 								<!-- Dashboard -->
 								<modulehook>
 									<name>dashboard</name>
