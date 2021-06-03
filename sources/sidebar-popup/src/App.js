@@ -15,15 +15,18 @@
  */
 
 import React, { useState } from 'react';
-import { mui } from '@craftercms/studio';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  makeStyles
+} from '@material-ui/core';
+import { components } from '@craftercms/studio';
 import ItemsList from './ItemsList';
 
-const { makeStyles } = mui;
+const { CrafterCMSNextBridge } = components;
 
 const useStyles = makeStyles((theme) => ({
   // '@global': {
@@ -39,24 +42,31 @@ export default function App() {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   return (
-    <div className={classes.root}>
-      <Button color="primary" variant="contained" fullWidth onClick={() => setOpen(true)}>Open popup</Button>
-      <Dialog
-        open={open}
-        fullWidth
-        maxWidth="sm"
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">Select an option</DialogTitle>
-        <DialogContent>
-          <ItemsList onItemActionClick={() => setOpen(false)} />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">Done</Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <CrafterCMSNextBridge>
+      <div className={classes.root}>
+        <Button
+          color="primary"
+          variant="contained"
+          fullWidth
+          onClick={() => setOpen(true)}
+        >Open popup</Button>
+        <Dialog
+          open={open}
+          fullWidth
+          maxWidth="sm"
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">Select an option</DialogTitle>
+          <DialogContent>
+            <ItemsList onItemActionClick={() => setOpen(false)} />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">Done</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    </CrafterCMSNextBridge>
   );
 }
