@@ -20,8 +20,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import replace from 'rollup-plugin-replace';
 import commit from 'rollup-plugin-commit';
 import copy from 'rollup-plugin-copy';
-
-// TODO: Should add terser for compress output for production build
+import { terser } from 'rollup-plugin-terser';
 
 const plugins = [
   replace({ 'process.env.NODE_ENV': '"production"' }),
@@ -55,7 +54,8 @@ const plugins = [
     targets: [
       '../../config/studio/plugins/sidebar/popup/index.js'
     ]
-  })
+  }),
+  terser()
 ];
 
 const external = [
@@ -64,7 +64,8 @@ const external = [
   'react',
   'react-dom',
   'CrafterCMSNext',
-  '@craftercms/studio'
+  '@craftercms/studio',
+  '@material-ui/core'
 ];
 
 const globals = {
@@ -73,7 +74,8 @@ const globals = {
   'react': 'window.CrafterCMSNext.React',
   'react-dom': 'window.CrafterCMSNext.ReactDOM',
   'CrafterCMSNext': 'window.CrafterCMSNext',
-  '@craftercms/studio': 'window.CrafterCMSNext'
+  '@craftercms/studio': 'window.CrafterCMSNext',
+  '@material-ui/core': 'window.CrafterCMSNext.mui'
 };
 
 export default [

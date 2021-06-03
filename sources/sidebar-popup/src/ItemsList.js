@@ -1,23 +1,29 @@
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import MoreVertRounded from '@material-ui/icons/MoreVertRounded';
-import IconButton from '@material-ui/core/IconButton';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import { Menu, MenuItem } from '@material-ui/core';
+import {
+  List,
+  ListItem,
+  ListItemText,
+  IconButton,
+  ListItemSecondaryAction,
+  Menu,
+  MenuItem
+} from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { util, rxjs } from '@craftercms/studio';
+import MoreVertRounded from '@material-ui/icons/MoreVertRounded';
+import { services, rxjs } from '@craftercms/studio';
 
 const { operators: { pluck } } = rxjs;
+const { content: { fetchLegacyItemsTree } } = services;
 
 export default function ItemsList(props) {
   const { onItemActionClick } = props;
   const [items, setItems] = useState();
   const [menu, setMenu] = useState();
   useEffect(() => {
-    util.ajax.get(
-      `/studio/api/1/services/api/1/content/get-items-tree.json?site=31x-sidebar-plugin&path=/site/website&depth=1&order=default`
-    ).pipe(pluck('response', 'item', 'children')).subscribe(setItems)
+    fetchLegacyItemsTree(
+      CStudioAuthoringContext.site,
+      '/site/website',
+      { depth: 1, order: 'default' }
+    ).pipe(pluck('children')).subscribe(setItems);
   }, []);
   const handleMenuClose = () => setMenu(null);
   const handleEdit = () => {
@@ -40,7 +46,7 @@ export default function ItemsList(props) {
         },
         callingWindow: window
       }
-    )
+    );
   };
   const handlePublish = () => {
     const item = menu.item;
@@ -63,7 +69,10 @@ export default function ItemsList(props) {
             secondary={`${item.path}/${item.name}`}
           />
           <ListItemSecondaryAction>
-            <IconButton edge="end" aria-label="Options" onClick={(e) => setMenu({ item, anchor: e.currentTarget })}>
+            <IconButton
+              edge="end" aria-label="Options"
+              onClick={(e) => setMenu({ item, anchor: e.currentTarget })}
+            >
               <MoreVertRounded />
             </IconButton>
           </ListItemSecondaryAction>
